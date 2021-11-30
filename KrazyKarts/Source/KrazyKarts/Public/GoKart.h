@@ -38,12 +38,14 @@ private:
 	// The mass of the car (kg).
 	UPROPERTY(EditAnywhere)
 		float Mass = 1000;
+
 	// The force applied to the car when the throttle is fully down (N).
 	UPROPERTY(EditAnywhere)
 		float MaxDrivingForce = 10000;
-	// The number of degrees rotated per second at full control throw (degrees/s).
+
+	// Minimum radius of the car turning circle at full lock (m).
 	UPROPERTY(EditAnywhere)
-		float MaxDegreesPerSecond = 90;
+		float MinTurningRadius = 10;
 
 	// Higher means more drag.
 	UPROPERTY(EditAnywhere)
