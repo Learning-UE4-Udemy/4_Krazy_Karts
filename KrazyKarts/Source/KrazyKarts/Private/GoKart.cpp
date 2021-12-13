@@ -71,6 +71,10 @@ void AGoKart::OnRep_ServerState() {
 	Velocity = ServerState.Velocity;
 
 	ClearAcknowledgeMoves(ServerState.LastMove);
+
+	for (const FGoKartMove& Move : UnacknowledgedMoves) {
+		SimulateMove(Move);
+	}
 }
 
 FGoKartMove AGoKart::CreateMove(float DeltaTime) {
@@ -94,7 +98,7 @@ void AGoKart::ClearAcknowledgeMoves(FGoKartMove LastMove) {
 	UnacknowledgedMoves = NewMoves;
 }
 
-void AGoKart::SimulateMove(FGoKartMove Move) {
+void AGoKart::SimulateMove(const FGoKartMove& Move) {
 	FVector Force = GetActorForwardVector() * MaxDrivingForce * Move.Throttle;
 
 	Force += GetAirResistance();
