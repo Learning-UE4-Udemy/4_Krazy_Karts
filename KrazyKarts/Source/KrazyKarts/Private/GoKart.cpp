@@ -10,6 +10,7 @@ AGoKart::AGoKart() {
 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	bReplicates = true;
+	SetReplicates(false);
 
 	MovementComponent = CreateDefaultSubobject<UGoKartMovementComponent>(TEXT("MovementComponent"));
 	MovementReplicator = CreateDefaultSubobject<UGoKartMovementReplicator>(TEXT("MovementReplicator"));
@@ -18,6 +19,7 @@ AGoKart::AGoKart() {
 // Called when the game starts or when spawned
 void AGoKart::BeginPlay() {
 	Super::BeginPlay();
+
 
 	if (HasAuthority()) {
 		NetUpdateFrequency = 1;
