@@ -59,11 +59,18 @@ void UGoKartMovementReplicator::ClientTick(float DeltaTime) {
 
 	FVector TargetLocation = ServerState.Transform.GetLocation();
 	float LerpRation = ClientTimeSinceUpdate / ClientTimeBetweenLastUpdates;
-	FVector StartLocation = ClientStartLocation;
+	FVector StartLocation = ClientStartTransform.GetLocation();
 
 	FVector NewLocation = FMath::LerpStable(StartLocation, TargetLocation, LerpRation);
 
 	GetOwner()->SetActorLocation(NewLocation);
+
+	FQuat TargetRotation = ServerState.Transform.GetRotation();
+	FQuat StartRotation = ClientStartTransform.GetRotation();
+
+	FQuat NewRotation = FQuat::Slerp(StartRotation, TargetRotation, LerpRation);
+
+	GetOwner()->SetActorRotation(NewRotation);
 }
 
 
@@ -104,7 +111,7 @@ void UGoKartMovementReplicator::SimulatedProxy_OnRep_ServerState() {
 	ClientTimeBetweenLastUpdates = ClientTimeSinceUpdate;
 	ClientTimeSinceUpdate = 0;
 
-	ClientStartLocation = GetOwner()->GetActorLocation();
+	ClientStartTransform = GetOwner()->GetActorTransform();
 }
 
 void UGoKartMovementReplicator::ClearAcknowledgeMoves(FGoKartMove LastMove) {
