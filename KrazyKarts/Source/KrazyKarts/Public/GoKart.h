@@ -32,17 +32,12 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-private:
-
-	void MoveForward(float Value);
-
-	void MoveRight(float Value);
-
-
-
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UGoKartMovementComponent* MovementComponent;
-
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UGoKartMovementReplicator* MovementReplicator;
+
+private:
+	void MoveForward(float Value);
+	void MoveRight(float Value);
 };

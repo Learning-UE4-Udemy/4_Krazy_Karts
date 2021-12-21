@@ -59,7 +59,7 @@ private:
 	void ClientTick(float DeltaTime);
 	FHermiteCubicSpline CreateSpline();
 	void InterpolateLocation(const FHermiteCubicSpline& Spline, float LerpRation);
-	void InterpolateVelocity(const FHermiteCubicSpline &Spline, float LerpRatio);
+	void InterpolateVelocity(const FHermiteCubicSpline& Spline, float LerpRatio);
 	void InterpolateRotation(float LerpRation);
 	float VelocityToDerivative();
 
@@ -83,4 +83,9 @@ private:
 
 	UPROPERTY()
 		UGoKartMovementComponent* MovementComponent;
+
+	UPROPERTY()
+		USceneComponent* MeshOffsetRoot;
+	UFUNCTION(BlueprintCallable)
+		void SetMeshOffsetRoot(USceneComponent* Root) { MeshOffsetRoot = Root; };
 };
