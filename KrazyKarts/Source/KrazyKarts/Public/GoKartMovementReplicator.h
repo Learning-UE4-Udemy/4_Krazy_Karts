@@ -20,7 +20,18 @@ struct FGoKartState {
 
 	UPROPERTY()
 		FGoKartMove LastMove;
+};
 
+struct FHermiteCubicSpline {
+	FVector StartLocation, StartDerivative, TargetLocation, TargetDerivative;
+
+	FVector InterpolateLocation(float LerpRation) const {
+		return FMath::CubicInterp(StartLocation, StartDerivative, TargetLocation, TargetDerivative, LerpRation);
+	}
+
+	FVector InterpolateDerivative(float LerpRation) const {
+		return FMath::CubicInterpDerivative(StartLocation, StartDerivative, TargetLocation, TargetDerivative, LerpRation);
+	}
 };
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
@@ -46,6 +57,11 @@ private:
 	void UpdateServerState(const FGoKartMove& Move);
 
 	void ClientTick(float DeltaTime);
+	FHermiteCubicSpline CreateSpline();
+	void InterpolateLocation(const FHermiteCubicSpline& Spline, float LerpRation);
+	void InterpolateVelocity(const FHermiteCubicSpline &Spline, float LerpRatio);
+	void InterpolateRotation(float LerpRation);
+	float VelocityToDerivative();
 
 	UFUNCTION(Server, Reliable, WithValidation)
 		void Server_SendMove(FGoKartMove Move);
@@ -53,13 +69,10 @@ private:
 	UPROPERTY(ReplicatedUsing = OnRep_ServerState)
 		FGoKartState ServerState;
 
-
 	UFUNCTION()
 		void OnRep_ServerState();
-		void AutonomousProxy_OnRep_ServerState();
-		void SimulatedProxy_OnRep_ServerState();
-
-
+	void AutonomousProxy_OnRep_ServerState();
+	void SimulatedProxy_OnRep_ServerState();
 
 	TArray<FGoKartMove> UnacknowledgedMoves;
 
