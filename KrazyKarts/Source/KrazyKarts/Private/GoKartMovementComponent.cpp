@@ -64,9 +64,9 @@ void UGoKartMovementComponent::ApplyRotation(float DeltaTime, float _SteeringThr
 	float RotationAngle = DeltaLocation / MinTurningRadius * _SteeringThrow;
 	FQuat RotationDelta(GetOwner()->GetActorUpVector(), RotationAngle);
 
-	GetOwner()->AddActorWorldRotation(RotationDelta);
-
 	Velocity = RotationDelta.RotateVector(Velocity);
+
+	GetOwner()->AddActorWorldRotation(RotationDelta);
 }
 
 void UGoKartMovementComponent::UpdateLocationFromVelocity(float DeltaTime)
@@ -76,6 +76,6 @@ void UGoKartMovementComponent::UpdateLocationFromVelocity(float DeltaTime)
 	FHitResult Hit;
 	GetOwner()->AddActorWorldOffset(Translation, true, &Hit);
 	if (Hit.IsValidBlockingHit()) {
-		//Velocity = FVector::ZeroVector;
+		Velocity = FVector::ZeroVector;
 	}
 }
